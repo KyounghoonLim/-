@@ -102,13 +102,15 @@ export default {
       const p = this.height * (e.clientY - this.firstClicked) / this.v
       window.scrollTo({top: p, behavior: 'smooth'})
     },
-    scrollHandler: async function(){
+    scrollHandler: function(){
       store.dispatch('scrollHandler', window.scrollY)
 
       if (!this.flag2){
         this.flag2 = true
-        if (this.scroll + this.v == this.height){
-          await this.$store.dispatch('arrivedEnd', true)
+        if (!Math.floor(Math.abs(this.scroll + this.v - this.height))){
+          this.$store.dispatch('arrivedEnd', true)
+        }
+        else if (this.$store.state.isEnd) {
           this.$store.dispatch('arrivedEnd', false)
         }
         this.flag2 = false

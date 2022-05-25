@@ -5,10 +5,10 @@
       <span @click="changeTab('calendar')" :class="{'tab':true, 'active': tab == 'calendar'}">달력으로 보기</span>
       <span @click="changeTab('grid')" :class="{'tab':true, 'active': tab == 'grid'}">그리드로 보기</span>
     </article>
-    <diary-pop-up v-if="target" :target="target" @close-pop-up="closePopUp" @change-diaries="changeDiaries" />
+    <diary-pop-up v-if="target" :target="target" @close-pop-up="closePopUp" @change-diaries="changeDiaries" ref="popup" />
     <article class="main-body">
-      <calendar v-if="tab == 'calendar'" :changes="changes" @show-date-diary="showDateDiary" @change-diaries="changeDiaries" />
-      <grid v-if="tab == 'grid'" />
+      <calendar v-if="tab == 'calendar'" @show-date-diary="showDateDiary" ref="calendar" />
+      <grid v-if="tab == 'grid'" ref="grid" />
     </article>
   </section>
 </template>
@@ -24,8 +24,7 @@ export default {
   data: () => {
     return {
       target: null,
-      dollNo: null,
-      changes: false
+      dollNo: null
     }
   },
   components: {
@@ -38,9 +37,6 @@ export default {
     tab: function(){
       return this.$route.query.tab
     },
-		// ...mapState([
-    //   'user',
-    // ])
   },
   methods: {
     changeTab: function(tab){
@@ -52,8 +48,8 @@ export default {
     closePopUp: function(){
       this.target = null
     },
-    changeDiaries: function(tar){
-      this.changes = tar
+    changeDiaries: function(){
+      this.$refs.calendar.getItems(false)
     }
   },
   created(){

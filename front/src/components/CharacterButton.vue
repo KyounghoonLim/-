@@ -13,9 +13,7 @@
 			</div>
     </div>
 
-    <div class="character-popup"
-			:class="{ active : popupView }"
-			>
+    <div class="character-popup" v-if="popupView" :class="{ active : popupView }">
       <character-pop-up @close-pop-up="openPopup()"	@change-item="getCharItem()" />
     </div>
   </div>

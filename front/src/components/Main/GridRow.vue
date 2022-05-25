@@ -1,6 +1,6 @@
 <template>
   <div :class="['grid-row', `row-${num}`]">
-    <button v-if="num == 0" class="create-btn">+</button>
+    <button v-if="num == 0" class="create-btn" @click="createDiary">+</button>
     <card v-for="item of items" :key="item.title + item.diaryNo" :item="item"/>
     <transition name="markers-show">
       <div class="markers" v-show="showMarkers">
@@ -68,6 +68,9 @@ export default {
     getOffset: function(){
       const tar = document.querySelectorAll(`.row-${this.num}`)[0]
       this.offset = tar.parentElement.offsetTop + tar.offsetTop
+    },
+    createDiary: function(){
+      this.$router.push('/diary')
     }
   },
   mounted: function(){

@@ -63,6 +63,7 @@ export default {
   },
   created: function(){
     this.$store.dispatch('getUser')
+    this.$on('updated', this.getHeight)
   },
   mounted: function(){
     this.getHeight()

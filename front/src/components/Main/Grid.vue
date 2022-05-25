@@ -14,7 +14,7 @@ import customAxios from '@/customAxios'
 export default {
   data: function(){
     return {
-      items: null,
+      items: [],
       page: 1,
       loading: false,
       flag: false
@@ -28,22 +28,24 @@ export default {
       return store.state.isEnd
     },
     nums: function(){
-      if (this.items){
+      if (this.items.length){
         return Math.ceil(this.items.length / 4)
       }
       return 0
     },
     point: function(){
-      const point = [[0, this.items[0].diaryDate.slice(0, 7)]]
-
-      this.items.forEach((ele, idx) => {
-        const tar = point[point.length-1][1]
-        if (tar != ele.diaryDate.slice(0, 7)){
-          point.push([idx, ele.diaryDate.slice(0, 7)])
-        }
-      })
-
-      return point
+      if (this.items.length){
+        const point = [[0, this.items[0].diaryDate.slice(0, 7)]]
+  
+        this.items.forEach((ele, idx) => {
+          const tar = point[point.length-1][1]
+          if (tar != ele.diaryDate.slice(0, 7)){
+            point.push([idx, ele.diaryDate.slice(0, 7)])
+          }
+        })
+        return point
+      }
+      return 0
     }
   },
   methods: {
@@ -59,10 +61,19 @@ export default {
         url: `/api/diary/findPage/${this.page}`
       })
       .then(res => {
-        this.items = res.data
-        this.page += 1
+        if (res.data.length){
+          this.items = this.items.concat(res.data)
+          this.page += 1
+        }
+        else {
+          this.flag = true
+        }
       })
       .catch(err => console.log(err))
+      .finally(() => {
+        this.loading = false
+        this.$parent.$parent.$emit('updated')
+      })
     }
   },
   watch: {
@@ -70,11 +81,6 @@ export default {
       if (!this.loading && this.isEnd && !this.flag){
         this.loading = true
         this.getItem()
-      }
-    },
-    page: function(){
-      if (this.page > this.nums / 2){
-        this.flag = true
       }
     }
   },

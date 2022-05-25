@@ -33,7 +33,6 @@ import Swal from 'sweetalert2'
 export default {
   data: function(){
     return {
-      changes: false,
       diaries: this.target.diaries
     }
   },
@@ -73,9 +72,9 @@ export default {
               text: '삭제되었습니다 😥'
             })
             .then(() => {
-              this.changes = true
               this.diaries.splice(idx, 1)
             })
+            .then(() => this.$emit('change-diaries'))
           })
         }
         else {return}
@@ -89,9 +88,6 @@ export default {
   destroyed: function(){
     const body = document.querySelector('body')
     body.style.overflowY = 'scroll'
-    if (this.changes){
-      this.$emit('change-diaries', true)
-    }
   }
 }
 </script>

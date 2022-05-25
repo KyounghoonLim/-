@@ -25,9 +25,6 @@ const VCalendar =  {
       clickedDay: null
     }
   },
-  props: {
-    changes: Boolean
-  },
   components: {
     Calendar,
   },
@@ -38,7 +35,17 @@ const VCalendar =  {
       url: `/api/diary/findDate/${this.page[0] + '/' + this.page[1]}`
     })
     .then(res => {
-      this.items = res.data
+      if (init){
+        this.items = res.data
+      }
+      else {
+        Object.keys(this.items).forEach(key => {
+          try {
+            this.items[key] = res.data[key]
+          }
+          catch {return}
+        })
+      }
     })
     .then(() => this.loadDairies(init))
     .catch(err => console.log(err))
@@ -100,6 +107,7 @@ const VCalendar =  {
                     break
                   }
                 }
+                console.log('여기 ',tar)
               }
 
               for (const item of this.items[key]){
@@ -132,7 +140,6 @@ const VCalendar =  {
           this.setEvent()
         }
       )
-      this.$emit('change-diaries', false)
     },
 
     clickEventHandler: function(e, tar){
@@ -183,14 +190,6 @@ const VCalendar =  {
       }
 
       return [y, m, d]
-    }
-  },
-
-  watch: {
-    changes: function(){
-      if (this.changes){
-        this.getItems(false)
-      }
     }
   },
 
