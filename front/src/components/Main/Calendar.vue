@@ -9,7 +9,6 @@
 
 <script>
 import Calendar from 'v-calendar/lib/components/calendar.umd'
-// import Dummy from './Dummy.js'
 import customAxios from '@/customAxios'
 
 const VCalendar =  {

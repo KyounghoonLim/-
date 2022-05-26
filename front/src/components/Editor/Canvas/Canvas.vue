@@ -73,7 +73,8 @@ export default {
             size: 16,
             family: 'HallymMjo-Regular',
             weight: 'normal',
-            align: 'left'
+            align: 'left',
+            color: '#000000'
           }
         }
 
