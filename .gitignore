@@ -3,8 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=vuejs,visualstudiocode,java,windows,macos
 
 ### ENV_VARIABLE ###
-.env.development
-.env.production
+.env.*
 
 ### Java ###
 # Compiled class file
